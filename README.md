@@ -9,7 +9,7 @@ ArXiv link<br>
 This repository is a fork of the edm2 directory [1,2] (available at https://github.com/NVlabs/edm2/tree/main).
 All credit for this repository goes to: NVIDIA CORPORATION & AFFILIATES. <br>
 
-The only modification is the "generate_imges_FBG.py" file which is designed as a flexible placeholder for the "generate_images.py" file present in the original repository. <br>
+The only modification is the `generate_imges_FBG.py` file which is designed as a flexible placeholder for the `generate_images.py` file present in the original repository. <br>
 
 Currently the repsitory conains all the files required for the reproduction of the results in the context of class-conditional generation. A notebook compatible with Stable Diffusion will soon be added.
 
@@ -24,19 +24,19 @@ The main modifications made to the "generate_images_FBG.py" from the "generate_i
  
  - Three distinct guidance methods are implemented: 'CFG'[3], 'LIG'[4] and 'FBG'
        Two hybrid methods are also added: 'Hybrid_CFG_FBG' and 'Hybrid_LIG_FBG'  (Make sure to add all relevant hyperparameters when using these)
-       This can be specified using '--guidance_type 'CFG/LIG/FBG/HybridCFG_FBG/Hybrid_LIG_FBG''
+       This can be specified using `--guidance_type`
 	   
- - Three distinct sampling schemes are implemented: 'Stochastic', '1st_order_Euler' and '2nd_order_Heun'
+ - Three distinct sampling schemes are implemented: 'stochastic', '1st_order_Euler' and '2nd_order_Heun'
        The first follows from a sampling of the backward markov chain, while the two latter follow from the PFODE
 	     The PFODE methods are implemented standardly: so no added stochastic noise as present in the original file: see [1,2,5]
-       This can be specified using '--sampling_type 'stochastic/1st_order_Euler/2nd_order_Heun''
+       This can be specified using `--sampling_type`
 
  - The presets are modified to avoid the use of Autoguidance (allthough our FBG scheme can easily be reformulated to work as such):
-       These are defined using the FID optimized learned models.
-   This canbe specified using '--preset 'edm2-img512-xs''
+       These are defined using the FID optimized learned models and can bespecified using `--preset 'edm2-img512-{size}'`
+   
 	   
  - A print_guidance_scale command that prints the guidance scales during inference is also implemented. (Only to be used when debugging/analysing the code)
-       To print the guidance scales through inference simply add '--print_guidance_scales' to your desired run
+       To print the guidance scales through inference simply add `--print_guidance_scales` to your desired run
 '''
 # If you want to print the dynamic guidance scale values
 --print_gudiance_scales  
