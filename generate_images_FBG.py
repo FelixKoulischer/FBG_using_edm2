@@ -73,15 +73,15 @@ config_presets = {
 }
 
 #----------------------------------------------------------------------------
-# Sampler based on the EDM sampler from the paper (for simplicity we remove the stochastic term in the PFODE methods)
+# Sampler based on the EDM sampler from the paper (for simplicity we remove the  term in the PFODE methods)
 # "Elucidating the Design Space of Diffusion-Based Generative Models",
-# Further extended to support CFG, LIG, FBG and Hybrid methods under Stochastic sampling, 1st order Euler or 2nd order Heun
+# Further extended to support CFG, LIG, FBG and Hybrid methods under  sampling, 1st order Euler or 2nd order Heun
 
 def edm_sampler(
     net, noise, labels=None, gnet=None,
     num_steps=64, sigma_min=0.002, sigma_max=80, rho=7, 
     # Added hyperparameters
-    guidance_type = 'CFG', sampling_type = 'Stochastic',
+    guidance_type = 'CFG', sampling_type = 'stochastic',
     constant_guidance=1., t_start=2.9, t_end=0.5,
     temp=0., offset=0., pi=0.95, t_0 = 0.5, t_1 = 0.4, max_guidance=10.,          
     dtype=torch.float32, randn_like=torch.randn_like,
@@ -89,6 +89,7 @@ def edm_sampler(
     print_guids = False,
 ):
     assert guidance_type in ['CFG','LIG','FBG','Hybrid_CFG_FBG', 'Hybrid_LIG_FBG']
+    assert sampling_type in ['stochastic','1st_order_Euler','2nd_order_Heun']
     
     # From max guidscale to posterior ratio values
     minimal_log_posterior = np.log((1-pi)*max_guidance/(max_guidance-1))
@@ -159,7 +160,7 @@ def edm_sampler(
             guided_Dx = uncond_Dx + guidance_scale[:,None,None,None]*(cond_Dx - uncond_Dx)
 
         # Apply sampling step along using the desired sampler
-        if sampling_type == 'Stochastic':
+        if sampling_type == 'stochastic':
             x_next = t_next**2/t_cur**2 * x_cur + (t_cur**2-t_next**2)/t_cur**2 * guided_Dx 
             if i < num_steps - 1:
                 pure_stochastic_noise = torch.randn_like(x_next)
@@ -408,7 +409,7 @@ def parse_int_list(s):
 
 # Choose sampling type
 @click.option('--guidance_type', 'guidance_type',         help='Type of guidance used: CFG, LIG, FBG, Hybrid_CFG_FBG, Hybrid_LIG_FBG', metavar='STR',     type=str, default='CFG', required=True)
-@click.option('--sampling_type', 'sampling_type',         help='Type of sampling used: Stochastic, 1st_order_Euler, 2nd_order_Heun',   metavar='STR',     type=str, default='Stochastic', required=True)
+@click.option('--sampling_type', 'sampling_type',         help='Type of sampling used: stochastic, 1st_order_Euler, 2nd_order_Heun',   metavar='STR',     type=str, default='stochastic', required=True)
 @click.option('--print_guidance_scales', 'print_guids',   help='Should the guidance scale be printed throughout inference?',  is_flag=True) # Deactivated by default
 
 
