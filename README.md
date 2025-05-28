@@ -24,32 +24,23 @@ The main modifications made to the "generate_images_FBG.py" from the "generate_i
  
  - Three distinct guidance methods are implemented: 'CFG'[3], 'LIG'[4] and 'FBG'
        Two hybrid methods are also added: 'Hybrid_CFG_FBG' and 'Hybrid_LIG_FBG'  (Make sure to add all relevant hyperparameters when using these)
-   '''
-   # Choose your guidance type: ['CFG', 'LIG', 'FBG', 'Hybrid_CFG_FBG', 'Hybrid_LIG_FBG']
-   --guidance_type 'CFG' # For example
-   '''
+       This can be specified using '--guidance_type 'CFG/LIG/FBG/HybridCFG_FBG/Hybrid_LIG_FBG''
 	   
  - Three distinct sampling schemes are implemented: 'Stochastic', '1st_order_Euler' and '2nd_order_Heun'
        The first follows from a sampling of the backward markov chain, while the two latter follow from the PFODE
 	     The PFODE methods are implemented standardly: so no added stochastic noise as present in the original file: see [1,2,5]
-   '''
-   # Choose your sampling type: ['stochastic', '1st_order_Euler', '2nd_order_Heun']
-   --sampling_type 'stochastic' # For example
-   '''
+       This can be specified using '--sampling_type 'stochastic/1st_order_Euler/2nd_order_Heun''
 
  - The presets are modified to avoid the use of Autoguidance (allthough our FBG scheme can easily be reformulated to work as such):
        These are defined using the FID optimized learned models.
-   '''
-   # Choose your preset network: 'edm2-img512-xs/s/m/l/xl'
-   --preset 'edm2-img512-xs'  # For example. This corresponds to --preset edm2-img512-xs-fid in the original repository without Autoguidance
-   '''
+   This canbe specified using '--preset 'edm2-img512-xs''
 	   
  - A print_guidance_scale command that prints the guidance scales during inference is also implemented. (Only to be used when debugging/analysing the code)
-       To print the guidance scales through inference simply add --print_guidance_scales to your desired run
-   '''
-   # If you want to print the dynamic guidance scale values
-   --print_gudiance_scales  
-   '''
+       To print the guidance scales through inference simply add '--print_guidance_scales' to your desired run
+'''
+# If you want to print the dynamic guidance scale values
+--print_gudiance_scales  
+'''
 
 ## Useful commands to test out different guidance schemes
 
