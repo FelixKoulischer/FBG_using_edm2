@@ -2,7 +2,7 @@
 
 **FeedBack Guidance of Diffusion Models** (under review) <br>
 Felix Koulischer, Florian Handke, Johannes Deleu, Thomas Demeester and Luca Ambrogioni <br>
-ArXiv link<br>
+ArXiv link: To be added shortly<br>
 
 ## Overview of the repository
 
@@ -37,10 +37,6 @@ The main modifications made to the "generate_images_FBG.py" from the "generate_i
 	   
  - A print_guidance_scale command that prints the guidance scales during inference is also implemented. (Only to be used when debugging/analysing the code)
        To print the guidance scales through inference simply add `--print_guidance_scales` to your desired run
-'''
-# If you want to print the dynamic guidance scale values
---print_gudiance_scales  
-'''
 
 ## Useful commands to test out different guidance schemes
 
