@@ -8,31 +8,48 @@ ArXiv link<br>
 
 This repository is a fork of the edm2 directory [1,2] (available at https://github.com/NVlabs/edm2/tree/main).
 All credit for this repository goes to: NVIDIA CORPORATION & AFFILIATES. <br>
+
 The only modification is the "generate_imges_FBG.py" file which is designed as a flexible placeholder for the "generate_images.py" file present in the original repository. <br>
+
 Currently the repsitory conains all the files required for the reproduction of the results in the context of class-conditional generation. A notebook compatible with Stable Diffusion will soon be added.
 
 ## Main changes of the repository
 
 The main modifications made to the "generate_images_FBG.py" from the "generate_images.py" file are the following: 
 
- - The "update_log_posterior" function, which is essential for the working of FBG, is added
+ - The "update_log_posterior" function, which is essential for the working of FBG, is added inside the edm sampler
  
  - The functions for the relevant hyperparameters required for FBG, in particluar how tau and delta depend on pi t_0 and t_1, are added
-       IMPORTANT: If tau (temp) and delta (offset) are explicitly specified this overrides the functions (i.e. t_0 and t_1 become irrelevant)
+       **IMPORTANT:** If tau (temp) and delta (offset) are explicitly specified this overrides the functions (i.e. t_0 and t_1 become irrelevant)
  
  - Three distinct guidance methods are implemented: 'CFG'[3], 'LIG'[4] and 'FBG'
-       Two hybrid methods are also added: 'Hybrid_CFG_FBG' and 'Hybrid_CFG_LIG'  (Make sure to add all relevant hyperparameters when using these)
+       Two hybrid methods are also added: 'Hybrid_CFG_FBG' and 'Hybrid_LIG_FBG'  (Make sure to add all relevant hyperparameters when using these)
+   '''
+   # Choose your guidance type: ['CFG', 'LIG', 'FBG', 'Hybrid_CFG_FBG', 'Hybrid_LIG_FBG']
+   --guidance_type 'CFG' # For example
+   '''
 	   
  - Three distinct sampling schemes are implemented: 'Stochastic', '1st_order_Euler' and '2nd_order_Heun'
        The first follows from a sampling of the backward markov chain, while the two latter follow from the PFODE
-	     The PFODE methods are implemented standardly: so no added stochastic noise as present in the original file: see [1,2] 
+	     The PFODE methods are implemented standardly: so no added stochastic noise as present in the original file: see [1,2,5]
+   '''
+   # Choose your sampling type: ['stochastic', '1st_order_Euler', '2nd_order_Heun']
+   --sampling_type 'stochastic' # For example
+   '''
 
  - The presets are modified to avoid the use of Autoguidance (allthough our FBG scheme can easily be reformulated to work as such):
-       Instead of --preset 'edm2-img512-guid-fid-xs' => we simply redefine --preset 'edm2-img512-xs'
-       These are defined using the FID optimized learned models. 
+       These are defined using the FID optimized learned models.
+   '''
+   # Choose your preset network: 'edm2-img512-xs/s/m/l/xl'
+   --preset 'edm2-img512-xs'  # For example. This corresponds to --preset edm2-img512-xs-fid in the original repository without Autoguidance
+   '''
 	   
  - A print_guidance_scale command that prints the guidance scales during inference is also implemented. (Only to be used when debugging/analysing the code)
        To print the guidance scales through inference simply add --print_guidance_scales to your desired run
+   '''
+   # If you want to print the dynamic guidance scale values
+   --print_gudiance_scales  
+   '''
 
 ## Useful commands to test out different guidance schemes
 
@@ -76,6 +93,6 @@ This includes (but doe snot limit to) the authors of the aforementioned reposito
 
 [1] "Analyzing and Improving the Training Dynamics of Diffusion Models", T. Karras et al., 2024 (https://arxiv.org/abs/2312.02696)
 [2] "Guiding a Diffusion Model with a Bad Version of Itself", T. Karras et al., 2024 (https://arxiv.org/abs/2406.02507)
-[3] "Elucidating the Design Space of Diffusion-Based Generative Models", T. Karras et al., 2022 (https://arxiv.org/abs/2206.00364)
-[4] "Classifier-Free Diffusion Guidance", J. Ho and T. Salimans, 2022 (https://arxiv.org/abs/2207.12598)
-[5] "Applying Guidance in a Limited Interval Improves Sample and Distribution Quality in Diffusion Models", T. Kynkäänniemi et al., 2024 (https://arxiv.org/abs/2404.07724)
+[3] "Classifier-Free Diffusion Guidance", J. Ho and T. Salimans, 2022 (https://arxiv.org/abs/2207.12598)
+[4] "Applying Guidance in a Limited Interval Improves Sample and Distribution Quality in Diffusion Models", T. Kynkäänniemi et al., 2024 (https://arxiv.org/abs/2404.07724)
+[5] "Elucidating the Design Space of Diffusion-Based Generative Models", T. Karras et al., 2022 (https://arxiv.org/abs/2206.00364)
