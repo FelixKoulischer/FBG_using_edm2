@@ -6,7 +6,8 @@ ArXiv link<br>
 
 ## Overview of the repository
 
-This repository is a fork of the edm2 directory [1,2] (available at https://github.com/NVlabs/edm2/tree/main) All credit for this repository goes to: NVIDIA CORPORATION & AFFILIATES. <br>
+This repository is a fork of the edm2 directory [1,2] (available at https://github.com/NVlabs/edm2/tree/main).
+All credit for this repository goes to: NVIDIA CORPORATION & AFFILIATES. <br>
 The only modification is the "generate_imges_FBG.py" file which is designed as a flexible placeholder for the "generate_images.py" file present in the original repository. <br>
 Currently the repsitory conains all the files required for the reproduction of the results in the context of class-conditional generation. A notebook compatible with Stable Diffusion will soon be added.
 
@@ -14,10 +15,10 @@ Currently the repsitory conains all the files required for the reproduction of t
 
 The main modifications made to the "generate_images_FBG.py" from the "generate_images.py" file are the following: 
 
-- The "update_log_posterior" function, which is essential for the working of FBG, is added
+ - The "update_log_posterior" function, which is essential for the working of FBG, is added
  
  - The functions for the relevant hyperparameters required for FBG, in particluar how tau and delta depend on pi t_0 and t_1, are added
-       IMPORTANT: If tau (Temp) and delta (Offset) are explicitly specified this overrides the functions (i.e. t_0 and t_1 become irrelevant)!!
+       IMPORTANT: If tau (temp) and delta (offset) are explicitly specified this overrides the functions (i.e. t_0 and t_1 become irrelevant)
  
  - Three distinct guidance methods are implemented: 'CFG'[3], 'LIG'[4] and 'FBG'
        Two hybrid methods are also added: 'Hybrid_CFG_FBG' and 'Hybrid_CFG_LIG'  (Make sure to add all relevant hyperparameters when using these)
@@ -35,23 +36,31 @@ The main modifications made to the "generate_images_FBG.py" from the "generate_i
 
 ## Useful commands to test out different guidance schemes
 
+We here provide a few illustrative commands to generate image using different settings.
 
-Example 1: FBG + Stochastic sampling + Specifying t0 and t1 explicitly + printing the guidance scale:
+```.bash
+# Example 1: FBG + Stochastic sampling + Specifying t0 and t1 explicitly + printing the guidance scale
+python generate_images_FBG.py --preset=edm2-img512-xs --outdir=your/desired/out_directory \
+--seeds 0-3 --batch 4 --guidance_type 'FBG' --sampling_type 'stochastic' \
+ --pi 0.9999 --t_0 0.556 --t_1 0.429 ---max_guidance 10.0 \
+--print_guidance_scales 
+```
 
-python generate_images_FBG.py --preset=edm2-img512-xs --outdir=your/desired/out_directory --seeds 0-3 --batch 4 --guidance_type 'FBG' --sampling_type 'Stochastic'
- --Pi 0.9999 --t_0 0.556 --t_1 0.429 ---Max_guidance 10.0 --print_guidance_scales 
+ ```.bash
+# Example 2: FBG + 2nd_order_Heun + Specifying tau and delta explicitly
+python generate_images_FBG.py --preset=edm2-img512-xs --outdir=your/desired/out_directory  \
+--seeds 0-3 --batch 4 --guidance_type 'FBG' --sampling_type '2nd_order_Heun' --steps 32 \
+ --pi 0.999 --temp 0.2 --offset -0.2 --max_guidance 10.0
+```
 
-Example 2: FBG + 2nd_order_Heun + Specifying tau and delta explicitly + NOT printing the guidance scale:
-
-python generate_images_FBG.py --preset=edm2-img512-xs --outdir=your/desired/out_directory --seeds 0-3 --batch 4 --guidance_type 'FBG' --sampling_type '2nd_order_Heun' --steps 32
- --Pi 0.9999 --Temp 0.2 --Offset -0.2 --Max_guidance 10.0
-
-Example 3: Hybrid_LIG_FBG + 2nd_order_Heun + printing guidance_scales:
-       (Important notes: LIG interval given in noise level as in the original work [4] and the number of steps must be halved when comparing to first order methods for fair comparison)
-
-python generate_images_FBG_template.py --preset=edm2-img512-xs --outdir=out/Images/Correct_DCFG/FBG_final_test --seeds 0-3 --batch 4 --guidance_type 'Hybrid_LIG_FBG'
- --sampling_type 'Stochastic' --Constant_guidance 2. --t_start 2.9 --t_end 0.28 --Pi 0.999 --t_0 0.556 --t_1 0.429 --Max_guidance 10.0 --print_guidance_scales
- 
+  ```.bash
+# Example 3: Hybrid_LIG_FBG + 2nd_order_Heun + printing guidance_scales
+python generate_images_FBG_template.py --preset=edm2-img512-xs --outdir=your/desired/out_directory \
+ --seeds 0-3 --batch 4 --guidance_type 'Hybrid_LIG_FBG' --sampling_type 'stochastic' \
+ --constant_guidance 2. --t_start 2.9 --t_end 0.28 \
+--pi 0.999 --t_0 0.556 --t_1 0.429 --max_guidance 10.0 \
+--print_guidance_scales
+```
 
 **IMPORTANT:** Please make sure to always pass the required hyperparameters for the desired gudiance method. If not specified default values will be used.
 
