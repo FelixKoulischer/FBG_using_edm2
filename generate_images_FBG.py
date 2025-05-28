@@ -153,9 +153,13 @@ def edm_sampler(
         # Mix the scores to obtain the desired *guided* score
         if guidance_type == 'CFG':
             guided_Dx = uncond_Dx + constant_guidance*(cond_Dx - uncond_Dx)
+            if print_guids:
+                print(f'Guidance scale {i}: ', constant_guidance)
         if guidance_type == 'LIG':
             constant_guidance_t = torch.where((t_cur<t_start) & (t_cur>t_end),constant_guidance,1.)
             guided_Dx = uncond_Dx + constant_guidance_t*(cond_Dx - uncond_Dx)
+            if print_guids:
+                print(f'Guidance scale {i}: ', constant_guidance_t)
         if guidance_type in ['FBG', 'Hybrid_CFG_FBG','Hybrid_LIG_FBG']:
             guided_Dx = uncond_Dx + guidance_scale[:,None,None,None]*(cond_Dx - uncond_Dx)
 
