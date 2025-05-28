@@ -6,8 +6,8 @@ ArXiv link: To be added shortly<br>
 
 ## Overview of the repository
 
-This repository is a fork of the edm2 directory [1,2] (available at https://github.com/NVlabs/edm2/tree/main).
-All credit for this repository goes to: NVIDIA CORPORATION & AFFILIATES. <br>
+This repository is a fork of the edm2 directory [1,2] (https://github.com/NVlabs/edm2/tree/main). <br>
+All credit for this repository is reserved to the owners <br>
 
 The only modification is the `generate_imges_FBG.py` file which is designed as a flexible placeholder for the `generate_images.py` file present in the original repository. <br>
 
@@ -15,28 +15,28 @@ Currently the repsitory conains all the files required for the reproduction of t
 
 ## Main changes of the repository
 
-The main modifications made to the "generate_images_FBG.py" from the "generate_images.py" file are the following: 
+The main modifications made to the `generate_images_FBG.py` file are the following: 
 
- - The "update_log_posterior" function, which is essential for the working of FBG, is added inside the edm sampler
+ - The `update_log_posterior` function, which is essential for the working of FBG, is added inside the edm sampler.
  
- - The functions for the relevant hyperparameters required for FBG, in particluar how tau and delta depend on pi t_0 and t_1, are added
-       **IMPORTANT:** If tau (temp) and delta (offset) are explicitly specified this overrides the functions (i.e. t_0 and t_1 become irrelevant)
+ - The functions for the relevant hyperparameters required for FBG, in particluar how tau and delta depend on pi t_0 and t_1, are added. <br>
+       **IMPORTANT:** If tau (temp) and delta (offset) are explicitly specified this overrides the functions (i.e. t_0 and t_1 become irrelevant).
  
- - Three distinct guidance methods are implemented: 'CFG'[3], 'LIG'[4] and 'FBG'
-       Two hybrid methods are also added: 'Hybrid_CFG_FBG' and 'Hybrid_LIG_FBG'  (Make sure to add all relevant hyperparameters when using these)
-       This can be specified using `--guidance_type`
+ - Three distinct guidance methods are implemented: 'CFG'[3], 'LIG'[4] and 'FBG' <br>
+       Two hybrid methods are also added: 'Hybrid_CFG_FBG' and 'Hybrid_LIG_FBG, please make sure to add all relevant hyperparameters when using these. <br>
+       This can be specified using `--guidance_type`.
 	   
- - Three distinct sampling schemes are implemented: 'stochastic', '1st_order_Euler' and '2nd_order_Heun'
-       The first follows from a sampling of the backward markov chain, while the two latter follow from the PFODE
-	     The PFODE methods are implemented standardly: so no added stochastic noise as present in the original file: see [1,2,5]
-       This can be specified using `--sampling_type`
+ - Three distinct sampling schemes are implemented: 'stochastic', '1st_order_Euler' and '2nd_order_Heun'. <br>
+       The first follows from a sampling of the backward markov chain, while the two latter follow from the PFODE. <br>
+	     The PFODE methods are implemented standardly: so no added stochastic noise as present in the original file: see [1,2,5]. <br>
+       This can be specified using `--sampling_type`.
 
- - The presets are modified to avoid the use of Autoguidance (allthough our FBG scheme can easily be reformulated to work as such):
-       These are defined using the FID optimized learned models and can bespecified using `--preset 'edm2-img512-{size}'`
+ - The presets are modified to avoid the use of Autoguidance (allthough our FBG scheme can easily be reformulated to work as such). <br>
+       These are defined using the FID optimized learned models and can bespecified using `--preset 'edm2-img512-{size}'`.
    
 	   
- - A print_guidance_scale command that prints the guidance scales during inference is also implemented. (Only to be used when debugging/analysing the code)
-       To print the guidance scales through inference simply add `--print_guidance_scales` to your desired run
+ - A print_guidance_scale command that prints the guidance scales during inference is also implemented. (Only to be used when debugging/analysing the code). <br>
+       To print the guidance scales through inference simply add `--print_guidance_scales` to your desired run.
 
 ## Useful commands to test out different guidance schemes
 
@@ -46,7 +46,7 @@ We here provide a few illustrative commands to generate image using different se
 # Example 1: FBG + Stochastic sampling + Specifying t0 and t1 explicitly + printing the guidance scale
 python generate_images_FBG.py --preset=edm2-img512-xs --outdir=your/desired/out_directory \
 --seeds 0-3 --batch 4 --guidance_type 'FBG' --sampling_type 'stochastic' \
- --pi 0.9999 --t_0 0.556 --t_1 0.429 ---max_guidance 10.0 \
+ --pi 0.999 --t_0 0.556 --t_1 0.429 ---max_guidance 10.0 \
 --print_guidance_scales 
 ```
 
@@ -73,13 +73,13 @@ python generate_images_FBG_template.py --preset=edm2-img512-xs --outdir=your/des
 ## Acknowledgments
 
 We would like to express our sincere gratitude to effort made behind the implementation of the edm2 repository (available at https://github.com/NVlabs/edm2) on which our repository is based. <br>
-This includes (but doe snot limit to) the authors of the aforementioned repository: Tero Karras, Miika Aittala, Tuomas Kynkäänniemi, Jaakko Lehtinen, Janne Hellsten, Timo Aila, Samuli Laine
+This includes (but does not limit to) the authors of the aforementioned repository: Tero Karras, Miika Aittala, Tuomas Kynkäänniemi, Jaakko Lehtinen, Janne Hellsten, Timo Aila, Samuli Laine
 
 
 ## References
 
-[1] "Analyzing and Improving the Training Dynamics of Diffusion Models", T. Karras et al., 2024 (https://arxiv.org/abs/2312.02696)
-[2] "Guiding a Diffusion Model with a Bad Version of Itself", T. Karras et al., 2024 (https://arxiv.org/abs/2406.02507)
-[3] "Classifier-Free Diffusion Guidance", J. Ho and T. Salimans, 2022 (https://arxiv.org/abs/2207.12598)
-[4] "Applying Guidance in a Limited Interval Improves Sample and Distribution Quality in Diffusion Models", T. Kynkäänniemi et al., 2024 (https://arxiv.org/abs/2404.07724)
-[5] "Elucidating the Design Space of Diffusion-Based Generative Models", T. Karras et al., 2022 (https://arxiv.org/abs/2206.00364)
+[1] "Analyzing and Improving the Training Dynamics of Diffusion Models", T. Karras et al., 2024 (https://arxiv.org/abs/2312.02696) <br>
+[2] "Guiding a Diffusion Model with a Bad Version of Itself", T. Karras et al., 2024 (https://arxiv.org/abs/2406.02507) <br>
+[3] "Classifier-Free Diffusion Guidance", J. Ho and T. Salimans, 2022 (https://arxiv.org/abs/2207.12598) <br>
+[4] "Applying Guidance in a Limited Interval Improves Sample and Distribution Quality in Diffusion Models", T. Kynkäänniemi et al., 2024 (https://arxiv.org/abs/2404.07724) <br>
+[5] "Elucidating the Design Space of Diffusion-Based Generative Models", T. Karras et al., 2022 (https://arxiv.org/abs/2206.00364) <br>
