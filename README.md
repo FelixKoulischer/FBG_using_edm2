@@ -66,7 +66,7 @@ We here provide a few illustrative commands to generate image using different se
 # Example 1 (DinoV2 optimum): FBG + Stochastic sampling + Specifying t0 and t1 explicitly + printing the guidance scale
 python generate_images_FBG.py --preset=edm2-img512-xs --outdir=your/desired/out_directory \
 --seeds 0-3 --batch 4 --guidance_type 'FBG' --sampling_type 'stochastic' \
- --pi 0.999 --t_0 0.556 --t_1 0.429 ---max_guidance 10.0 \
+ --pi 0.999 --t_0 0.556 --t_1 0.429 --max_guidance 10.0 \
 --print_guidance_scales 
 ```
 
@@ -79,7 +79,7 @@ python generate_images_FBG.py --preset=edm2-img512-xs --outdir=your/desired/out_
 
   ```.bash
 # Example 3 (DinoV2 optimum): Hybrid_LIG_FBG + 2nd_order_Heun + printing guidance_scales
-python generate_images_FBG_template.py --preset=edm2-img512-xs --outdir=your/desired/out_directory \
+python generate_images_FBG.py --preset=edm2-img512-xs --outdir=your/desired/out_directory \
  --seeds 0-3 --batch 4 --guidance_type 'Hybrid_LIG_FBG' --sampling_type 'stochastic' \
  --constant_guidance 2.6 --t_start 6.84 --t_end 0.48 \
 --pi 0.999 --t_0 0.556 --t_1 0.492 --max_guidance 10.0 \
