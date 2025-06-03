@@ -303,9 +303,9 @@ def generate_images(
                 a = t1*N_steps - t1_lower                                                                            
                 sigma_square_tilde_t1, sigma_square_tilde_t1_next = sigma_square_tilde[t1_lower], sigma_square_tilde[t1_lower+1]
                 sigma_square_tilde = (1-a)*sigma_square_tilde_t1+a*sigma_square_tilde_t1_next
-                # Compute the Temperature
-                Temp = torch.abs(2*sigma_square_tilde/alpha * delta)
-                return round(Temp.item(),4)
+                # Compute the temperature
+                temp = torch.abs(2*sigma_square_tilde/alpha * delta)
+                return round(temp.item(),4)
 
             # The function to compute the discrete transition kernel variances used during sampling
             def get_sigma_square_tilde(num_steps, rho, sigma_min, sigma_max):
@@ -320,12 +320,12 @@ def generate_images(
                 print('Computing $delta$, $tau$ from $pi$, $t_0$ and $t_1$ ...\n    (if not desired specify --Offset and --Temp directly)\n')
                 sigma_square_tilde = get_sigma_square_tilde(sampler_kwargs['num_steps'],sampler_kwargs['rho'],sampler_kwargs['sigma_min'],sampler_kwargs['sigma_max'])
                 sampler_kwargs['offset'] = delta_from_t0(sampler_kwargs['num_steps'], sampler_kwargs['pi'], sampler_kwargs['t_0'], sigma_square_tilde, lambda_ref = 3.)
-                sampler_kwargs['Temp'] = Temp_from_t1(sampler_kwargs['num_steps'], sampler_kwargs['offset'], sampler_kwargs['t_1'], sigma_square_tilde, alpha=10.)
+                sampler_kwargs['temp'] = Temp_from_t1(sampler_kwargs['num_steps'], sampler_kwargs['offset'], sampler_kwargs['t_1'], sigma_square_tilde, alpha=10.)
 
             if verbose and sampler_kwargs['guidance_type'] in ['FBG', 'Hybrid_CFG_FBG', 'Hybrid_LIG_FBG']:
                 print(r'(Info) Pi value $\pi$:         ', sampler_kwargs['pi'])
                 print(r'(Info) offset value $\delta$ (should be negative):  ', sampler_kwargs['offset'])
-                print(r'(Info) Temp value $\tau$ (should be positive):       ', sampler_kwargs['temp'])
+                print(r'(Info) temp value $\tau$ (should be positive):       ', sampler_kwargs['temp'])
             if verbose and sampler_kwargs['guidance_type']=='CFG':
                 print(r'(Info) Guidance scale value $\lambda$: ', sampler_kwargs['constant_guidance'])
             if verbose and sampler_kwargs['guidance_type']=='LIG':
