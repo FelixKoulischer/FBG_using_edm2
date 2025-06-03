@@ -11,7 +11,7 @@ ArXiv link: To be added shortly<br>
 This repository is a fork of the edm2 directory [1,2] (https://github.com/NVlabs/edm2/tree/main). <br>
 All credit for this repository is reserved to the owners <br>
 
-The main modification is the `generate_imges_FBG.py` file which is designed as a flexible placeholder for the `generate_images.py` file present in the original repository. Some files, unnecessary for this work, have also been removed from the original repository. <br>
+The main modification is the `generate_imges_FBG.py` file which is designed as a flexible placeholder for the `generate_images.py` file present in the original repository. A python script to compute the precision and recall values given the location of the imagenet test set is also given as `calculate_precision_recall.py`. Some files, unnecessary for this work, have also been removed from the original repository. <br>
 
 Currently the repository contains all the files required for the reproduction of the results in the context of class-conditional generation. A notebook compatible with Stable Diffusion will soon be added.
 
@@ -39,13 +39,28 @@ The main modifications made to the `generate_images_FBG.py` file are the followi
  - The presets are modified to avoid the use of Autoguidance (allthough our FBG scheme can easily be reformulated to work as such). <br>
        These are defined using the FID optimized learned models and can bespecified using `--preset 'edm2-img512-{xs|s|m|l|xl}'`.
    
-	   
  - A print_guidance_scale command that prints the guidance scales during inference is also implemented (this functionality should only be used when debugging/analysing the code). <br>
        To print the guidance scales through inference simply add `--print_guidance_scales` to your desired run.
+
+
+The `calculate_precision_recall.py` file is a pytorch equivalent version of the one present in https://github.com/kynkaat/improved-precision-and-recall-metric/tree/master [6]. It takes as argument: 
+
+  - The location of the generated images `--generated_directory`
+
+  - The location of the Imagenet512 test set `--reference_directory`
+  
+  - The number of images that should be analysed `--num_images`
+
+  - The batch size with which the images are processed `--batch_size`
+
+  - The k value for the k-th nearest neighbour `--top_k`
 
 ## Useful commands to test out different guidance schemes
 
 We here provide a few illustrative commands to generate image using different settings.
+
+**IMPORTANT:** Please make sure to always pass the required hyperparameters for the desired gudiance method. If not specified default values will be used.
+
 
 ```.bash
 # Example 1 (DinoV2 optimum): FBG + Stochastic sampling + Specifying t0 and t1 explicitly + printing the guidance scale
@@ -59,7 +74,7 @@ python generate_images_FBG.py --preset=edm2-img512-xs --outdir=your/desired/out_
 # Example 2 (arbitrary values for tau and delta): FBG + 2nd_order_Heun + Specifying tau and delta explicitly
 python generate_images_FBG.py --preset=edm2-img512-xs --outdir=your/desired/out_directory  \
 --seeds 0-3 --batch 4 --guidance_type 'FBG' --sampling_type '2nd_order_Heun' --steps 32 \
- --pi 0.999 --temp 0.2 --offset -0.2 --max_guidance 10.0
+ --pi 0.999 --temp 0.2 --offset -0.02 --max_guidance 10.0
 ```
 
   ```.bash
@@ -71,9 +86,13 @@ python generate_images_FBG_template.py --preset=edm2-img512-xs --outdir=your/des
 --print_guidance_scales
 ```
 
-**IMPORTANT:** Please make sure to always pass the required hyperparameters for the desired gudiance method. If not specified default values will be used.
+We here provide a sample command to compute precision and recall values for generated images.
 
-
+  ```.bash
+# Example 4 (Precision Recall computation): 
+python precision_recall.py --generated_directory 'location\of\generated\images' --reference_directory 'location\of\Imagenet\Testset' \
+ --num_images 10240  --batch_size 256 --top_k 5
+```
 
 ## Acknowledgments
 
@@ -90,7 +109,6 @@ This includes (but does not limit to) the authors of the aforementioned reposito
   year      = {2025},
   url={https://arxiv.org/abs/???}
 }
-}
 ```
 
 
@@ -101,3 +119,4 @@ This includes (but does not limit to) the authors of the aforementioned reposito
 [3] "Classifier-Free Diffusion Guidance", J. Ho and T. Salimans, 2022 (https://arxiv.org/abs/2207.12598) <br>
 [4] "Applying Guidance in a Limited Interval Improves Sample and Distribution Quality in Diffusion Models", T. Kynkäänniemi et al., 2024 (https://arxiv.org/abs/2404.07724) <br>
 [5] "Elucidating the Design Space of Diffusion-Based Generative Models", T. Karras et al., 2022 (https://arxiv.org/abs/2206.00364) <br>
+[6] "Improved Precision and Recall Metric for Assessing Generative Models", T. Kynkäänniemi et al., 2019 (https://arxiv.org/abs/1904.06991) <br>
