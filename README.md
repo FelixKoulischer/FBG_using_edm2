@@ -1,8 +1,8 @@
-## FeedBack Gudiance of Diffusion Models &mdash; Official PyTorch implementation
+## Feedback Gudiance of Diffusion Models &mdash; Official PyTorch implementation
 
 ![Teaser image](./docs/Illustration_FBG.jpg)
 
-**FeedBack Guidance of Diffusion Models** (under review) <br>
+**Feedback Guidance of Diffusion Models** (under review) <br>
 Felix Koulischer, Florian Handke, Johannes Deleu, Thomas Demeester and Luca Ambrogioni <br>
 ArXiv link: To be added shortly<br>
 
@@ -11,9 +11,10 @@ ArXiv link: To be added shortly<br>
 This repository is a fork of the edm2 directory [1,2] (https://github.com/NVlabs/edm2/tree/main). <br>
 All credit for this repository is reserved to the owners <br>
 
-The main modification is the `generate_imges_FBG.py` file which is designed as a flexible placeholder for the `generate_images.py` file present in the original repository. A python script to compute the precision and recall values given the location of the imagenet test set is also given as `calculate_precision_recall.py`. Some files, unnecessary for this work, have also been removed from the original repository. <br>
-
-Currently the repository contains all the files required for the reproduction of the results in the context of class-conditional generation. A notebook compatible with Stable Diffusion will soon be added.
+The main modification is the `generate_images_FBG.py` file which is designed as a flexible placeholder for the `generate_images.py` file present in the original repository. A python script to compute the precision and recall values given the location of the imagenet test set is also given as `calculate_precision_recall.py`. Some files, unnecessary for this work, have also been removed from the original repository. <br>
+The small scale prompt dataset used in the context of T2I is also provided in `Various_complexity_prompt_dataset.csv`. <br>
+ 
+Currently the repository contains all the files required for the reproduction of the results in the context of class-conditional generation. A notebook compatible with Stable Diffusion will soon be added to reproduce the results in the context of T2I using the provided prompt dataset.
 
 ![Teaser image](./docs/Control_Diagram_FBG.jpg)
 
@@ -54,6 +55,17 @@ The `calculate_precision_recall.py` file is a pytorch equivalent version of the 
   - The batch size with which the images are processed `--batch_size`
 
   - The k value for the k-th nearest neighbour `--top_k`
+
+
+The `Various_complexity_prompt_dataset.csv` contains all the prompts used in the T2I analysis. The datasets contains:
+
+  - The `'Difficulty'` of the prompt, corresponding to one of `'Memorized'`, `'Easy'`, `'Intermediate'` or `'Very hard'`
+
+  - The `'Category'` of the prompt, for the memorized prompts this is either `'Artwork'`, `'Location'` or `'Brand'`, while for the other three it is one of `'Animal'`, `'Food'` or `'Landscape'`
+
+  - The `'Prompt name'`, which is a small string describing the prompt
+
+  - The `'Prompt'` itself
 
 ## Useful commands to test out different guidance schemes
 
