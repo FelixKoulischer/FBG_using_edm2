@@ -1,0 +1,61 @@
+Difficulty,Category,Prompt name,Prompt
+Memorized,Artwork,The starry night,The starry night by Van Gogh
+Memorized,Artwork,The Mona Lisa,The Mona Lisa by Leonardo Da Vinci
+Memorized,Artwork,The great wave,The Great Wave by Hokusai
+Memorized,Artwork,Girl with a pearl,Girl with a pearl earring by Vermeer
+Memorized,Artwork,The scream,The scream by Edward Munch
+Memorized,Location,The Eiffel tower,A photo of the Eiffel tower in Paris
+Memorized,Location,The Pyramids,A photo of the pyramids of Giza
+Memorized,Location,The Christ Redeemer,A photo of the christ redeemer statue in Rio
+Memorized,Location,The Taj Mahal,A photo of the Taj Mahal in India
+Memorized,Location,The Golden gate bridge,A photo of the golden gate bridge in San Fransisco
+Memorized,Brand,The Nike logo,The Nike brand logo
+Memorized,Brand,The Apple logo,The Apple brand logo
+Memorized,Brand,The Samsung logo,The Samsung brand logo
+Memorized,Brand,The Google logo,The Google brand logo
+Memorized,Brand,The Gucci logo,The Gucci brand logo
+Basic,Animal,Cat in a couch,An orange cat sitting on a couch
+Basic,Animal,Dog running in a park,A dog playing in the park
+Basic,Animal,Ducklings,Yellow ducklings following their mother
+Basic,Animal,Elephant spraying water,A grey elephant spraying water with its trunk
+Basic,Animal,Panda eating bamboo,A panda eating bamboo
+Basic,Food,Pizza slice,A pizza slice on a white plate
+Basic,Food,Cheeseburger,A cheeseburger with lettuce and tomato
+Basic,Food,Coffee and croissant,A cup of coffee next to a croissant
+Basic,Food,Sushi platter,A sushi platter
+Basic,Food,Chocolate cake with candles,A chocolate cake with candles on top
+Basic,Landscape,Bird nest,A bird nest with three blue eggs
+Basic,Landscape,Desert,A desert with sand dunes and a cactus
+Basic,Landscape,Snail on leaf,A snail crawling on a green leaf with water droplets
+Basic,Landscape,Mushrooms,Red and white mushrooms growing at the base of a tree
+Basic,Landscape,Pinecone,A pinecone resting on a forest floor covered in needles
+Intermediate,Animal,Dolphin jumping,A dolphin jumping through a hoop made of fire
+Intermediate,Animal,Kangaroo boxing,A kangaroo boxing with a punching bag in a gym
+Intermediate,Animal,Chameleon with graffiti,A chameleon blending into a graffiti-covered wall
+Intermediate,Animal,Girafe wearing roller skates,A giraffe wearing roller skates on a basketball court
+Intermediate,Animal,Fox reading,A fox wearing reading glasses sitting under a tree with an open book
+Intermediate,Food,Sushi in shape of fish,"A floating sushi platter arranged in the shape of a koi fish, hovering over a pond"
+Intermediate,Food,Pancake castle,"A stack of pancakes shaped like a castle, with syrup rivers and butter flags"
+Intermediate,Food,Spiral galaxy ramen,A bowl of ramen where the noodles form a spiral galaxy
+Intermediate,Food,Fruit salad in watermelon,A fruit salad served in a carved-out watermelon shaped like a swan
+Intermediate,Food,Musical note spaghetti,A plate of spaghetti where the noodles are shaped like musical notes
+Intermediate,Landscape,Desert with train,A desert landscape with an abandoned train half-buried in the sand
+Intermediate,Landscape,Frozen lake with tree,A tree growing in the middle of a frozen lake during sunrise
+Intermediate,Landscape,Bioluminescent forest,A bioluminescent forest at night with glowing mushrooms and mist
+Intermediate,Landscape,Jungle with insects,A dense jungle with oversized insects and ruins covered in moss
+Intermediate,Landscape,Volcanic landscape at night,A volcanic landscape with rivers of lava flowing under a starry sky
+Very hard,Animal,Tiger in Kimono,"A white tiger wearing a silk kimono, seated on a throne made of ice in a bamboo forest, rendered in hyperrealistic 4K detail"
+Very hard,Animal,Parrot with goggles,"A parrot with steampunk goggles flying through a thunderstorm above a 19th-century shipwreck, in dramatic oil painting style"
+Very hard,Animal,Origami birds,A flock of rainbow coloured origami birds morphing mid-air into real birds over a misty lake at dawn
+Very hard,Animal,Sloth holding mirror,A sloth hanging from a cherry blossom tree while holding a mirror that reflects a city skyline at sunset
+Very hard,Animal,Running deer,"A herd of five translucent deer running through a glowing, bioluminescent meadow during a full moon, in watercolor style"
+Very hard,Food,City-like cake,"An enormous cake shaped like a city skyline at dusk, with working streetlights made from sugar and spun candy"
+Very hard,Food,Teapot with mythical creatures,"A glass teapot filled with herbal tea where each herb leaf is shaped like a different mythical creature, photographed on white marble"
+Very hard,Food,Cheese waterfall with knights,"A melted cheese waterfall flowing down a mountain of fries, surrounded by knights on horseback made of breadsticks, in a Renaissance painting style"
+Very hard,Food,Spiral croissant,"A croissant slowly unrolling itself into a spiral staircase, with tiny chefs walking up each layer, in detailed isometric art style"
+Very hard,Food,Soup inside crystal,"A soup served in a hollowed-out crystal geode, with steam forming the shape of ancient runes above it"
+Very hard,Landscape,Violin valley,"A valley shaped like a violin viewed from above, with rivers of orange juice as strings and clouds forming the bow, in hyperrealistic aerial style"
+Very hard,Landscape,Canyon city,"A city built inside a giant canyon where each layer of rock houses a different civilization, all lit by bioluminescent flora"
+Very hard,Landscape,Floating island,"A floating island chained to the earth by golden vines, casting a shadow shaped like a phoenix over the ocean below"
+Very hard,Landscape,Volcanic island with blue lava,"A volcanic island in mid-eruption, where the lava is blue and the smoke forms mythical beasts, rendered in classical Japanese woodblock style"
+Very hard,Landscape,Mirror mountain,"A mountain made of mirrors reflecting a thunderstorm sky, with hikers wearing red suits ascending the slope"
