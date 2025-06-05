@@ -412,7 +412,7 @@ def parse_int_list(s):
 @click.option('--rho',                                    help='Time step exponent', metavar='FLOAT',                             type=click.FloatRange(min=0, min_open=True), default=7, show_default=True)
 
 # Choose sampling type
-@click.option('--guidance_type', 'guidance_type',         help='Type of guidance used: CFG, LIG, FBG_pure, FBG_CFG and FBG_LIG'', metavar='STR',     type=str, default='CFG', required=True)
+@click.option('--guidance_type', 'guidance_type',         help='Type of guidance used: CFG, LIG, FBG_pure, FBG_CFG and FBG_LIG', metavar='STR',     type=str, default='CFG', required=True)
 @click.option('--sampling_type', 'sampling_type',         help='Type of sampling used: stochastic, 1st_order_Euler, 2nd_order_Heun',   metavar='STR',     type=str, default='stochastic', required=True)
 @click.option('--print_guidance_scales', 'print_guids',   help='Should the guidance scale be printed throughout inference?',  is_flag=True) # Deactivated by default
 
