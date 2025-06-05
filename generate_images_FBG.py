@@ -75,7 +75,7 @@ config_presets = {
 #----------------------------------------------------------------------------
 # Sampler based on the EDM sampler from the paper (for simplicity we remove the  term in the PFODE methods)
 # "Elucidating the Design Space of Diffusion-Based Generative Models",
-# Further extended to support CFG, LIG, FBG and Hybrid methods under  sampling, 1st order Euler or 2nd order Heun
+# Further extended to support CFG, LIG, FBG and combined methods under sampling, 1st order Euler or 2nd order Heun
 
 def edm_sampler(
     net, noise, labels=None, gnet=None,
@@ -88,13 +88,13 @@ def edm_sampler(
     # For visualisation/tracking
     print_guids = False,
 ):
-    assert guidance_type in ['CFG','LIG','FBG','Hybrid_CFG_FBG', 'Hybrid_LIG_FBG']
+    assert guidance_type in ['CFG','LIG','FBG_pure','FBG_CFG', 'FBG_LIG']
     assert sampling_type in ['stochastic','1st_order_Euler','2nd_order_Heun']
     
     # From max guidscale to posterior ratio values
     minimal_log_posterior = np.log((1-pi)*max_guidance/(max_guidance-1))
     # If a Hybrid method is used one needs to compensate for the constant guidance applied: max_guidance-> max_guidance - (constant_guidance-1)
-    if guidance_type in ['Hybrid_CFG_FBG','Hybrid_LIG_FBG']:   
+    if guidance_type in ['FBG_CFG','FBG_LIG']:   
         minimal_log_posterior = np.log((1-pi)*(max_guidance-constant_guidance+1)/(max_guidance-constant_guidance))
 
     print('Minimum log posterior value: ', minimal_log_posterior)
@@ -136,12 +136,12 @@ def edm_sampler(
     for i, (t_cur, t_next) in enumerate(zip(t_steps[:-1], t_steps[1:])):      # 0, ..., N-1
         # Compute the guidance scale for FBG (ignored in case of LIG or CFG)
         guidance_scale = torch.exp(log_posterior)/(torch.exp(log_posterior)-(1-pi))
-        # In case of hybrid methods: add the constant guidance specified in the relevant intervals
-        if guidance_type == 'Hybrid_CFG_FBG': 
+        # In case of combined methods: add the constant guidance specified in the relevant intervals
+        if guidance_type == 'FBG_CFG': 
             guidance_scale += constant_guidance-1
-        if guidance_type == 'Hybrid_LIG_FBG' and t_cur<t_start and t_cur>t_end:
+        if guidance_type == 'FBG_LIG' and t_cur<t_start and t_cur>t_end:
             guidance_scale += constant_guidance-1
-        if print_guids and guidance_type in ['FBG','Hybrid_CFG_FBG','Hybrid_LIG_FBG']:
+        if print_guids and guidance_type in ['FBG_pure','FBG_CFG','FBG_LIG']:
             print(f'Guidance scale {i}: ', guidance_scale)
 
         # Step
@@ -160,7 +160,7 @@ def edm_sampler(
             guided_Dx = uncond_Dx + constant_guidance_t*(cond_Dx - uncond_Dx)
             if print_guids:
                 print(f'Guidance scale {i}: ', constant_guidance_t)
-        if guidance_type in ['FBG', 'Hybrid_CFG_FBG','Hybrid_LIG_FBG']:
+        if guidance_type in ['FBG_pure', 'FBG_CFG','FBG_LIG']:
             guided_Dx = uncond_Dx + guidance_scale[:,None,None,None]*(cond_Dx - uncond_Dx)
 
         # Apply sampling step along using the desired sampler
@@ -182,7 +182,7 @@ def edm_sampler(
                 if guidance_type == 'LIG':
                     constant_guidance_t = torch.where((t_cur<t_start) & (t_cur>t_end),constant_guidance,1.)
                     guided_Dx_next = uncond_Dx_next + constant_guidance_t*(cond_Dx_next - uncond_Dx_next)
-                if guidance_type in ['FBG', 'Hybrid_CFG_FBG','Hybrid_LIG_FBG']:                               # Notice here we use the same guidance scale as atprevious timestep (adapting this is left as future work)
+                if guidance_type in ['FBG_pure', 'FBG_CFG','FBG_LIG']:                               # Notice here we use the same guidance scale as atprevious timestep (adapting this is left as future work)
                     guided_Dx_next = uncond_Dx_next + guidance_scale[:,None,None,None]*(cond_Dx_next - uncond_Dx_next)       
                 x_next = x_cur + (t_next - t_cur) * (0.5 * (x_cur-guided_Dx)/t_cur + 0.5 * (x_next-guided_Dx_next)/t_next)
 
@@ -316,13 +316,13 @@ def generate_images(
                     sigma_square_tilde[num_steps-i-1] = (t_cur**2-t_next**2) * t_next**2/t_cur**2
                 return sigma_square_tilde
                 
-            if sampler_kwargs['temp']==-1. and sampler_kwargs['guidance_type'] in ['FBG', 'Hybrid_CFG_FBG', 'Hybrid_LIG_FBG']:
+            if sampler_kwargs['temp']==-1. and sampler_kwargs['guidance_type'] in ['FBG_pure', 'FBG_CFG','FBG_LIG']:
                 print('Computing $delta$, $tau$ from $pi$, $t_0$ and $t_1$ ...\n    (if not desired specify --Offset and --Temp directly)\n')
                 sigma_square_tilde = get_sigma_square_tilde(sampler_kwargs['num_steps'],sampler_kwargs['rho'],sampler_kwargs['sigma_min'],sampler_kwargs['sigma_max'])
                 sampler_kwargs['offset'] = delta_from_t0(sampler_kwargs['num_steps'], sampler_kwargs['pi'], sampler_kwargs['t_0'], sigma_square_tilde, lambda_ref = 3.)
                 sampler_kwargs['temp'] = Temp_from_t1(sampler_kwargs['num_steps'], sampler_kwargs['offset'], sampler_kwargs['t_1'], sigma_square_tilde, alpha=10.)
 
-            if verbose and sampler_kwargs['guidance_type'] in ['FBG', 'Hybrid_CFG_FBG', 'Hybrid_LIG_FBG']:
+            if verbose and sampler_kwargs['guidance_type'] in ['FBG_pure', 'FBG_CFG','FBG_LIG']:
                 print(r'(Info) Pi value $\pi$:         ', sampler_kwargs['pi'])
                 print(r'(Info) offset value $\delta$ (should be negative):  ', sampler_kwargs['offset'])
                 print(r'(Info) temp value $\tau$ (should be positive):       ', sampler_kwargs['temp'])
@@ -412,7 +412,7 @@ def parse_int_list(s):
 @click.option('--rho',                                    help='Time step exponent', metavar='FLOAT',                             type=click.FloatRange(min=0, min_open=True), default=7, show_default=True)
 
 # Choose sampling type
-@click.option('--guidance_type', 'guidance_type',         help='Type of guidance used: CFG, LIG, FBG, Hybrid_CFG_FBG, Hybrid_LIG_FBG', metavar='STR',     type=str, default='CFG', required=True)
+@click.option('--guidance_type', 'guidance_type',         help='Type of guidance used: CFG, LIG, FBG_pure, FBG_CFG and FBG_LIG'', metavar='STR',     type=str, default='CFG', required=True)
 @click.option('--sampling_type', 'sampling_type',         help='Type of sampling used: stochastic, 1st_order_Euler, 2nd_order_Heun',   metavar='STR',     type=str, default='stochastic', required=True)
 @click.option('--print_guidance_scales', 'print_guids',   help='Should the guidance scale be printed throughout inference?',  is_flag=True) # Deactivated by default
 
