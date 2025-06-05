@@ -27,8 +27,8 @@ The main modifications made to the `generate_images_FBG.py` file are the followi
  - The functions for the relevant hyperparameters required for FBG, in particluar how tau and delta depend on `pi`, `t_0` and `t_1`, are added. <br>
        **IMPORTANT:** If tau (or `temp`) and delta (or `offset`) are explicitly specified this overrides the aforementioned functions (i.e. `t_0` and `t_1` become irrelevant).
  
- - Three distinct guidance methods are implemented: `'CFG'`[3], `'LIG'`[4] and `'FBG'` <br>
-       Two hybrid methods are also added: `'Hybrid_CFG_FBG'` and `'Hybrid_LIG_FBG'`, please make sure to add all relevant hyperparameters when using these. <br>
+ - Three distinct guidance methods are implemented: `'CFG'`[3], `'LIG'`[4] and `'FBG_pure'` <br>
+       Two combined methods are also added: `'FBG_CFG'` and `'FBG_LIG'`, please make sure to add all relevant hyperparameters when using these. <br>
        This can be specified using `--guidance_type`.
 	   
  - Three distinct sampling schemes are implemented: `'stochastic'`, `'1st_order_Euler'` and `'2nd_order_Heun'`. <br>
@@ -77,7 +77,7 @@ We here provide a few illustrative commands to generate image using different se
 ```.bash
 # Example 1 (DinoV2 optimum): FBG + Stochastic sampling + Specifying t0 and t1 explicitly + printing the guidance scale
 python generate_images_FBG.py --preset=edm2-img512-xs --outdir=your/desired/out_directory \
---seeds 0-3 --batch 4 --guidance_type 'FBG' --sampling_type 'stochastic' \
+--seeds 0-3 --batch 4 --guidance_type 'FBG_pure' --sampling_type 'stochastic' \
  --pi 0.999 --t_0 0.556 --t_1 0.429 --max_guidance 10.0 \
 --print_guidance_scales 
 ```
@@ -85,14 +85,14 @@ python generate_images_FBG.py --preset=edm2-img512-xs --outdir=your/desired/out_
  ```.bash
 # Example 2 (arbitrary values for tau and delta): FBG + 2nd_order_Heun + Specifying tau and delta explicitly
 python generate_images_FBG.py --preset=edm2-img512-xs --outdir=your/desired/out_directory  \
---seeds 0-3 --batch 4 --guidance_type 'FBG' --sampling_type '2nd_order_Heun' --steps 32 \
+--seeds 0-3 --batch 4 --guidance_type 'FBG_pure' --sampling_type '2nd_order_Heun' --steps 32 \
  --pi 0.999 --temp 0.2 --offset -0.02 --max_guidance 10.0
 ```
 
   ```.bash
-# Example 3 (DinoV2 optimum): Hybrid_LIG_FBG + 2nd_order_Heun + printing guidance_scales
+# Example 3 (DinoV2 optimum): FBG_LIG + 2nd_order_Heun + printing guidance_scales
 python generate_images_FBG.py --preset=edm2-img512-xs --outdir=your/desired/out_directory \
- --seeds 0-3 --batch 4 --guidance_type 'Hybrid_LIG_FBG' --sampling_type 'stochastic' \
+ --seeds 0-3 --batch 4 --guidance_type 'FBG_LIG' --sampling_type 'stochastic' \
  --constant_guidance 2.6 --t_start 6.84 --t_end 0.48 \
 --pi 0.999 --t_0 0.556 --t_1 0.492 --max_guidance 10.0 \
 --print_guidance_scales
@@ -114,12 +114,12 @@ This includes (but does not limit to) the authors of the aforementioned reposito
 ## Citation
 
 ```
-@misc{Koulischer2025FBG,
+@article{Koulischer2025FBG,
   title     = {Feedback Guidance of Diffusion Models},
   author    = {Felix Koulischer and Florian Handke and Johannes Deleu and
                Thomas Demeester and Luca Ambrogioni},
   year      = {2025},
-  url={https://arxiv.org/abs/???}
+  journal   ={arXiv preprint arXiv: ??}
 }
 ```
 
