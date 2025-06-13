@@ -4,7 +4,7 @@
 
 **Feedback Guidance of Diffusion Models** (under review) <br>
 Felix Koulischer, Florian Handke, Johannes Deleu, Thomas Demeester and Luca Ambrogioni <br>
-ArXiv link: To be added shortly<br>
+Preprint available at: [This link](https://arxiv.org/abs/2506.06085)<br>
 
 ## Overview of the repository
 
@@ -119,7 +119,7 @@ This includes (but does not limit to) the authors of the aforementioned reposito
   author    = {Felix Koulischer and Florian Handke and Johannes Deleu and
                Thomas Demeester and Luca Ambrogioni},
   year      = {2025},
-  journal   ={arXiv preprint arXiv: ??}
+  journal   ={arXiv preprint arXiv: 2506.06085}
 }
 ```
 
